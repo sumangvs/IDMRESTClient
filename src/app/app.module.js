@@ -16,7 +16,10 @@ var app_component_1 = require('./app.component');
 var app_routing_1 = require('./app.routing');
 var index_1 = require('./home/index');
 var index_2 = require('./login/index');
-var index_3 = require('./_services/index');
+var index_3 = require('./_guards/index');
+var index_4 = require('./application/index');
+var forms_2 = require('@angular/forms');
+var index_5 = require('./_services/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -26,15 +29,19 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                app_routing_1.routing
+                app_routing_1.routing,
+                forms_2.ReactiveFormsModule
             ],
             declarations: [
                 app_component_1.AppComponent,
                 index_1.HomeComponent,
                 index_2.LoginComponent,
+                index_4.ApplicationComponent,
             ],
             providers: [
-                index_3.AuthenticationService,
+                index_3.AuthGuard,
+                index_5.AuthenticationService,
+                index_5.ApplicationService,
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

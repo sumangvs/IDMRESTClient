@@ -2,8 +2,11 @@
 var router_1 = require('@angular/router');
 var index_1 = require('./home/index');
 var index_2 = require('./login/index');
+var index_3 = require('./application/index');
+var index_4 = require('./_guards/index');
 var appRoutes = [
-    { path: '', component: index_1.HomeComponent },
+    { path: '', component: index_1.HomeComponent, canActivate: [index_4.AuthGuard] },
+    { path: 'application', component: index_3.ApplicationComponent },
     { path: 'login', component: index_2.LoginComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
