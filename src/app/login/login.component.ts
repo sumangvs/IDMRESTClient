@@ -20,20 +20,32 @@ export class LoginComponent implements OnInit {
         private authenticationService: AuthenticationService) { }
 
     ngOnInit() {
-       
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    }
- 
-     login() {
-        this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
-            .subscribe(
+     this.returnUrl = '';
+      if (localStorage.getItem('token')) {
+             this.authenticationService.logout(localStorage.getItem('token'))
+             .subscribe(
                 data => {
+                    console.log('Init navigate');
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
                      this.loading = false;
                 });
+       }
+     
+    }
+ 
+     login() {
+        this.loading = true;
+        this.authenticationService.login(this.model.username,this.model.password)
+            .subscribe(
+                data => {
+                    console.log('before navigate');
+                    this.router.navigate([this.returnUrl]);
+                },
+                error => {
+                     this.loading = false;
+                });
+
     }
 }

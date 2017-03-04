@@ -20,14 +20,24 @@ var LoginComponent = (function () {
         this.loading = false;
     }
     LoginComponent.prototype.ngOnInit = function () {
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        var _this = this;
+        this.returnUrl = '';
+        if (localStorage.getItem('token')) {
+            this.authenticationService.logout(localStorage.getItem('token'))
+                .subscribe(function (data) {
+                console.log('Init navigate');
+                _this.router.navigate([_this.returnUrl]);
+            }, function (error) {
+                _this.loading = false;
+            });
+        }
     };
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(function (data) {
+            console.log('before navigate');
             _this.router.navigate([_this.returnUrl]);
         }, function (error) {
             _this.loading = false;
