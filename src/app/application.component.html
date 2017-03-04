@@ -1,0 +1,25 @@
+<div class="col-md-6 col-md-offset-3">
+    <p>You're logged in </p>
+    <h3>Applications: {{ appname }}</h3>
+
+   <div>
+
+       <form #f="ngForm" (ngSubmit)="searchRecords(f.value)" novalidate>
+                <ul *ngFor="let appFieldDef of this.filedList?.fieldsField">
+                    <li *ngIf="appFieldDef.nameField.indexOf('#') == -1 ">
+                        <div  class="form-group">
+                            <label> {{appFieldDef.nameField}}</label>
+                            <input dynamic-name="appFieldDef.nameField" type="{{ appFieldDef.type }}" placeholder="{{ appFieldDef.nameField }}" ng-model="appFieldDef.value" required>                   
+                        </div>
+                    </li>        
+                </ul>
+                <button type="submit"  class="btn btn-primary" [disabled]="loading" >Search</button>
+        </form>
+
+  
+  
+
+  
+
+    <p><a [routerLink]="['/login']">Logout</a></p>
+</div>
