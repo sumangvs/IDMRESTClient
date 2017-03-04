@@ -16,19 +16,33 @@ var AuthenticationService = (function () {
         this.http = http;
     }
     AuthenticationService.prototype.login = function (username, password) {
-        return this.http.post('/api/IDM/authenticate', JSON.stringify({ username: username, password: password }))
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post('http://10.96.9.32/HealthcareHTTPService/api/Account/login', JSON.stringify({ Email: username, Password: password }), options)
             .map(function (response) {
             // login successful if there's a jwt token in the response
             var user = response.json();
-            if (user && user.token) {
+            if (user && user.LicenseKey) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('token', user.LicenseKey);
+                console.log(user.LicenseKey);
             }
         });
     };
-    AuthenticationService.prototype.logout = function () {
+    AuthenticationService.prototype.logout = function (license) {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        console.log('logout');
+        //var lic = license.replace(/"/g,'');
+        console.log(license);
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post('http://10.96.9.32/HealthcareHTTPService/api/Account/logout', JSON.stringify({ License: license }), options)
+            .map(function (response) {
+            // login successful if there's a jwt token in the response
+            localStorage.removeItem('token');
+        });
     };
     AuthenticationService = __decorate([
         core_1.Injectable(), 
